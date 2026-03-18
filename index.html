@@ -1,3 +1,72 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Aplicación de lista de tareas (HTML, CSS y JavaScript vanilla)." />
+    <title>Lista de Tareas</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+    <header class="site-header">
+      <div class="container">
+        <h1>Lista de Tareas</h1>
+        <p class="subtitle">Agrega, completa y elimina tareas. Se guarda automáticamente en tu navegador.</p>
+      </div>
+    </header>
+
+    <main id="contenido" class="container" tabindex="-1">
+      <section class="card" aria-labelledby="titulo-form">
+        <h2 id="titulo-form" class="card-title">Nueva tarea</h2>
+
+        <form id="todoForm" class="todo-form" novalidate>
+          <label for="todoInput" class="label">Escribe tu tarea</label>
+          <div class="input-row">
+            <input
+              id="todoInput"
+              name="todo"
+              class="input"
+              type="text"
+              inputmode="text"
+              autocomplete="off"
+              maxlength="120"
+              placeholder="Ej. Estudiar JavaScript"
+              aria-describedby="todoHelp todoError"
+              required
+            />
+            <button id="addBtn" class="button button-primary" type="submit">Agregar</button>
+          </div>
+          <p id="todoHelp" class="help">Presiona Enter para agregar rápidamente. Máx. 120 caracteres.</p>
+          <p id="todoError" class="error" role="alert" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="card" aria-labelledby="titulo-lista">
+        <div class="list-header">
+          <h2 id="titulo-lista" class="card-title">Tus tareas</h2>
+          <p class="counter" aria-live="polite">
+            <span id="counterText">0 tareas</span>
+          </p>
+        </div>
+
+        <ul id="todoList" class="todo-list" aria-label="Lista de tareas"></ul>
+        <p id="emptyState" class="empty" aria-live="polite">No hay tareas todavía. Agrega la primera.</p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <small>
+          Hecho con HTML semántico, CSS responsive y JavaScript vanilla. Persistencia con <code>localStorage</code>.
+        </small>
+      </div>
+    </footer>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>
 <!DOCTYPE html>
 <html lang="en">
   <head>

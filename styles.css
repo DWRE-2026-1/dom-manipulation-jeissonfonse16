@@ -6,6 +6,7 @@
   --muted: rgba(233, 238, 251, 0.75);
   --danger: #ff6b6b;
   --accent: #7c5cff;
+  --accent-blue: #5aa7ff;
   --accent-2: #2ee59d;
   --focus: #ffcc66;
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
@@ -30,7 +31,7 @@ body {
     "Segoe UI Emoji";
   background:
     radial-gradient(1200px 700px at 20% 0%, rgba(124, 92, 255, 0.35), transparent 60%),
-    radial-gradient(900px 600px at 100% 30%, rgba(46, 229, 157, 0.22), transparent 60%),
+    radial-gradient(900px 600px at 100% 30%, rgba(90, 167, 255, 0.18), transparent 60%),
     var(--bg);
   color: var(--text);
   line-height: 1.5;
@@ -61,10 +62,17 @@ body {
   padding: 1.5rem 0 1rem;
 }
 
-.site-header h1 {
+.header-top {
+  display: grid;
+  gap: 0.75rem;
+  align-items: start;
+}
+
+.title {
   margin: 0 0 0.25rem;
-  font-size: 1.6rem;
+  font-size: 1.85rem;
   letter-spacing: -0.02em;
+  line-height: 1.1;
 }
 
 .subtitle {
@@ -74,9 +82,40 @@ body {
   max-width: 70ch;
 }
 
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.badge-accent {
+  border-color: rgba(124, 92, 255, 0.55);
+  background: linear-gradient(180deg, rgba(124, 92, 255, 0.22), rgba(124, 92, 255, 0.08));
+  color: rgba(233, 238, 251, 0.92);
+}
+
 .site-footer {
   padding: 1.5rem 0 2rem;
   color: var(--muted);
+}
+
+.footer-text {
+  display: inline-block;
+  opacity: 0.9;
 }
 
 .card {
@@ -92,6 +131,7 @@ body {
 .card-title {
   margin: 0 0 0.75rem;
   font-size: 1.1rem;
+  letter-spacing: -0.01em;
 }
 
 .todo-form {
@@ -109,14 +149,23 @@ body {
   gap: 0.5rem;
 }
 
+.input-row-elevated {
+  padding: 0.5rem;
+  border-radius: calc(var(--radius-sm) + 4px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+}
+
 .input {
   width: 100%;
   border-radius: var(--radius-sm);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(255, 255, 255, 0.06);
   color: var(--text);
   padding: 0.85rem 0.9rem;
   font-size: 1rem;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
 
 .input::placeholder {
@@ -124,8 +173,12 @@ body {
 }
 
 .input:focus {
-  outline: 3px solid rgba(255, 204, 102, 0.35);
-  border-color: rgba(255, 204, 102, 0.55);
+  outline: none;
+  border-color: rgba(124, 92, 255, 0.8);
+  box-shadow:
+    0 0 0 4px rgba(124, 92, 255, 0.22),
+    0 10px 24px rgba(0, 0, 0, 0.22);
+  transform: translateY(-1px);
 }
 
 .button {
@@ -137,7 +190,11 @@ body {
   padding: 0.85rem 1rem;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 120ms ease, background-color 120ms ease, border-color 120ms ease;
+  transition:
+    transform 140ms ease,
+    background-color 140ms ease,
+    border-color 140ms ease,
+    box-shadow 140ms ease;
 }
 
 .button:hover {
@@ -147,16 +204,32 @@ body {
   transform: translateY(1px);
 }
 .button:focus {
-  outline: 3px solid rgba(255, 204, 102, 0.35);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(255, 204, 102, 0.22);
 }
 
 .button-primary {
-  border-color: rgba(124, 92, 255, 0.6);
-  background: linear-gradient(180deg, rgba(124, 92, 255, 0.95), rgba(124, 92, 255, 0.55));
+  border-color: rgba(124, 92, 255, 0.7);
+  background: linear-gradient(135deg, rgba(124, 92, 255, 0.98), rgba(90, 167, 255, 0.6));
+  box-shadow:
+    0 10px 24px rgba(124, 92, 255, 0.18),
+    0 14px 40px rgba(0, 0, 0, 0.26);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 .button-primary:hover {
-  background: linear-gradient(180deg, rgba(124, 92, 255, 1), rgba(124, 92, 255, 0.65));
+  transform: translateY(-1px);
+  box-shadow:
+    0 12px 30px rgba(124, 92, 255, 0.22),
+    0 18px 48px rgba(0, 0, 0, 0.3);
+}
+
+.button-icon {
+  font-size: 1.15rem;
+  line-height: 1;
+  opacity: 0.95;
 }
 
 .help {
@@ -174,16 +247,41 @@ body {
 
 .list-header {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 1rem;
   margin-bottom: 0.75rem;
+  flex-wrap: wrap;
 }
 
-.counter {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.95rem;
+.filters {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(233, 238, 251, 0.9);
+  border-radius: 999px;
+  padding: 0.45rem 0.7rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 140ms ease, background-color 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+}
+.chip:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.1);
+}
+.chip:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(255, 204, 102, 0.18);
+}
+.chip.is-active {
+  border-color: rgba(124, 92, 255, 0.65);
+  background: linear-gradient(180deg, rgba(124, 92, 255, 0.26), rgba(124, 92, 255, 0.1));
 }
 
 .todo-list {
@@ -203,6 +301,19 @@ body {
   grid-template-columns: auto 1fr auto;
   gap: 0.75rem;
   align-items: center;
+  transition: transform 160ms ease, border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.todo-item:hover {
+  transform: translateY(-1px);
+  border-color: rgba(124, 92, 255, 0.28);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.22);
+}
+
+.todo-item:focus-within {
+  border-color: rgba(255, 204, 102, 0.45);
+  box-shadow: 0 0 0 4px rgba(255, 204, 102, 0.12);
 }
 
 .todo-text {
@@ -217,9 +328,49 @@ body {
 }
 
 .checkbox {
-  width: 1.1rem;
-  height: 1.1rem;
-  accent-color: var(--accent-2);
+  width: 1.25rem;
+  height: 1.25rem;
+  appearance: none;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.06);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 140ms ease, background-color 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.checkbox:hover {
+  transform: translateY(-1px);
+  border-color: rgba(46, 229, 157, 0.55);
+}
+
+.checkbox:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(255, 204, 102, 0.16);
+}
+
+.checkbox::before {
+  content: "";
+  width: 0.7rem;
+  height: 0.7rem;
+  transform: scale(0);
+  transition: transform 120ms ease;
+  clip-path: polygon(14% 44%, 0 65%, 42% 100%, 100% 16%, 80% 0, 39% 62%);
+  background: #04110b;
+}
+
+.checkbox:checked {
+  border-color: rgba(46, 229, 157, 0.75);
+  background: linear-gradient(180deg, rgba(46, 229, 157, 0.95), rgba(46, 229, 157, 0.55));
+}
+.checkbox:checked::before {
+  transform: scale(1);
+}
+
+.todo-item.is-completed {
+  border-color: rgba(46, 229, 157, 0.2);
+  background: rgba(46, 229, 157, 0.06);
 }
 
 .delete-btn {
@@ -234,6 +385,42 @@ body {
 .empty {
   margin: 0.75rem 0 0;
   color: var(--muted);
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-sm);
+  padding: 0.9rem 0.95rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Animations (prefers-reduced-motion friendly) */
+@media (prefers-reduced-motion: no-preference) {
+  .todo-item.is-new {
+    animation: todoIn 220ms ease-out both;
+  }
+  .todo-item.is-removing {
+    animation: todoOut 180ms ease-in both;
+  }
+}
+
+@keyframes todoIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes todoOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(6px);
+  }
 }
 
 /* Tablet (>=768px) */
@@ -242,8 +429,13 @@ body {
     padding: 2rem 0 1rem;
   }
 
-  .site-header h1 {
-    font-size: 2rem;
+  .header-top {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+  }
+
+  .title {
+    font-size: 2.3rem;
   }
 
   .card {

@@ -12,8 +12,17 @@
 
     <header class="site-header">
       <div class="container">
-        <h1>Lista de Tareas</h1>
-        <p class="subtitle">Agrega, completa y elimina tareas. Se guarda automáticamente en tu navegador.</p>
+        <div class="header-top">
+          <h1 class="title">Lista de Tareas</h1>
+          <div class="badges" aria-label="Resumen de tareas">
+            <span class="badge" id="totalBadge">Total: 0</span>
+            <span class="badge badge-accent" id="pendingBadge">Pendientes: 0</span>
+          </div>
+        </div>
+        <p class="subtitle">
+          Agrega, completa y elimina tareas. Se guarda automáticamente en tu navegador (con
+          <code>localStorage</code>).
+        </p>
       </div>
     </header>
 
@@ -23,7 +32,7 @@
 
         <form id="todoForm" class="todo-form" novalidate>
           <label for="todoInput" class="label">Escribe tu tarea</label>
-          <div class="input-row">
+          <div class="input-row input-row-elevated">
             <input
               id="todoInput"
               name="todo"
@@ -36,7 +45,10 @@
               aria-describedby="todoHelp todoError"
               required
             />
-            <button id="addBtn" class="button button-primary" type="submit">Agregar</button>
+            <button id="addBtn" class="button button-primary" type="submit">
+              <span class="button-label">Agregar</span>
+              <span class="button-icon" aria-hidden="true">+</span>
+            </button>
           </div>
           <p id="todoHelp" class="help">Presiona Enter para agregar rápidamente. Máx. 120 caracteres.</p>
           <p id="todoError" class="error" role="alert" aria-live="polite"></p>
@@ -46,9 +58,11 @@
       <section class="card" aria-labelledby="titulo-lista">
         <div class="list-header">
           <h2 id="titulo-lista" class="card-title">Tus tareas</h2>
-          <p class="counter" aria-live="polite">
-            <span id="counterText">0 tareas</span>
-          </p>
+          <div class="filters" role="tablist" aria-label="Filtros de tareas">
+            <button class="chip is-active" type="button" data-filter="all" aria-pressed="true">Todas</button>
+            <button class="chip" type="button" data-filter="active" aria-pressed="false">Pendientes</button>
+            <button class="chip" type="button" data-filter="completed" aria-pressed="false">Completadas</button>
+          </div>
         </div>
 
         <ul id="todoList" class="todo-list" aria-label="Lista de tareas"></ul>
@@ -58,25 +72,10 @@
 
     <footer class="site-footer">
       <div class="container">
-        <small>
-          Hecho con HTML semántico, CSS responsive y JavaScript vanilla. Persistencia con <code>localStorage</code>.
-        </small>
+        <small class="footer-text">Hecho con HTML, CSS y JavaScript vanilla. Persistencia local con <code>localStorage</code>.</small>
       </div>
     </footer>
 
     <script src="script.js" defer></script>
-  </body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./styles/styles.css" />
-    <title>Document</title>
-  </head>
-  <body>
-    <h1>Mi TODO list</h1>
-    <script src="scripts/script.js"></script>
   </body>
 </html>

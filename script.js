@@ -8,10 +8,16 @@
   const list = document.getElementById("todoList");
   const errorEl = document.getElementById("todoError");
   const emptyStateEl = document.getElementById("emptyState");
-  const counterTextEl = document.getElementById("counterText");
+  const totalBadgeEl = document.getElementById("totalBadge");
+  const pendingBadgeEl = document.getElementById("pendingBadge");
+  const filterButtons = Array.from(document.querySelectorAll("[data-filter]"));
 
   /** @type {{id: string, text: string, completed: boolean, createdAt: number}[]} */
   let todos = loadTodos();
+  /** @type {"all" | "active" | "completed"} */
+  let currentFilter = "all";
+  /** @type {string | null} */
+  let lastAddedId = null;
 
   // --- Persistence helpers (localStorage) ---
   function loadTodos() {
@@ -45,20 +51,24 @@
     else input.removeAttribute("aria-invalid");
   }
 
-  function updateCountersAndEmptyState() {
+  function updateBadgesAndEmptyState(visibleCount) {
     const total = todos.length;
     const completed = todos.filter((t) => t.completed).length;
     const remaining = total - completed;
 
-    const label =
-      total === 0
-        ? "0 tareas"
-        : total === 1
-          ? "1 tarea"
-          : `${total} tareas`;
+    totalBadgeEl.textContent = `Total: ${total}`;
+    pendingBadgeEl.textContent = `Pendientes: ${remaining}`;
 
-    counterTextEl.textContent = `${label} · ${remaining} pendientes`;
-    emptyStateEl.hidden = total !== 0;
+    // Empty state depends on the selected filter
+    let emptyMessage = "No hay tareas todavía. Agrega la primera.";
+    if (total > 0 && visibleCount === 0) {
+      emptyMessage =
+        currentFilter === "active"
+          ? "No tienes tareas pendientes. ¡Buen trabajo!"
+          : "No tienes tareas completadas todavía.";
+    }
+    emptyStateEl.textContent = emptyMessage;
+    emptyStateEl.hidden = visibleCount !== 0;
   }
 
   // --- Rendering ---
@@ -66,7 +76,14 @@
     // Clear list and rebuild for simplicity and clarity.
     list.innerHTML = "";
 
-    for (const todo of todos) {
+    const visibleTodos =
+      currentFilter === "active"
+        ? todos.filter((t) => !t.completed)
+        : currentFilter === "completed"
+          ? todos.filter((t) => t.completed)
+          : todos;
+
+    for (const todo of visibleTodos) {
       const li = document.createElement("li");
       li.className = `todo-item${todo.completed ? " is-completed" : ""}`;
       li.dataset.id = todo.id;
@@ -91,9 +108,16 @@
 
       li.append(checkbox, text, del);
       list.appendChild(li);
+
+      // Animate only the last added item
+      if (lastAddedId && todo.id === lastAddedId) {
+        li.classList.add("is-new");
+        window.setTimeout(() => li.classList.remove("is-new"), 260);
+      }
     }
 
-    updateCountersAndEmptyState();
+    updateBadgesAndEmptyState(visibleTodos.length);
+    lastAddedId = null;
   }
 
   // --- Core actions ---
@@ -108,12 +132,14 @@
 
     setError("");
 
-    todos.unshift({
+    const newTodo = {
       id: uid(),
       text,
       completed: false,
       createdAt: Date.now(),
-    });
+    };
+    todos.unshift(newTodo);
+    lastAddedId = newTodo.id;
 
     saveTodos();
     render();
@@ -156,7 +182,17 @@
     const id = li?.dataset?.id;
     if (!id) return;
 
-    if (action === "delete") deleteTodo(id);
+    if (action === "delete") {
+      // Animate removal before updating data
+      li.classList.add("is-removing");
+      li.addEventListener(
+        "animationend",
+        () => {
+          deleteTodo(id);
+        },
+        { once: true },
+      );
+    }
   });
 
   list.addEventListener("change", (e) => {
@@ -170,6 +206,22 @@
 
     toggleTodo(id);
   });
+
+  // Filters
+  for (const btn of filterButtons) {
+    btn.addEventListener("click", () => {
+      const next = /** @type {"all" | "active" | "completed"} */ (btn.dataset.filter);
+      currentFilter = next;
+
+      for (const b of filterButtons) {
+        const isActive = b.dataset.filter === next;
+        b.classList.toggle("is-active", isActive);
+        b.setAttribute("aria-pressed", isActive ? "true" : "false");
+      }
+
+      render();
+    });
+  }
 
   // Initial render
   render();
